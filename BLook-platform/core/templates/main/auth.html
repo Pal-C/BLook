@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>BLook</title>
+    <link rel="stylesheet" href="authstyles.css">
+</head>
+<body>
+
+<!-- Authentication Page -->
+
+<section class="form-header">
+    <img src=""> <!-- logo -->
+    <h1>BLook</h1>
+</section>
+
+<section class="forms-container">
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <div class="tabs">
+        <button onclick="showForm('login')">Login</button>
+        <button onclick="showForm('signup')">Sign Up</button>
+        <button onclick="showForm('forgot')">Forgot Password</button>
+    </div>
+
+    <!-- Login Form -->
+    <div id="login-form" class="auth-form">
+        <form method="post" action="{% url 'auth_screen' %}">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="login">
+
+            {% for field in login_form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="errorlist">{{ field.errors }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            {% if login_form.non_field_errors %}
+                <div class="errorlist">{{ login_form.non_field_errors }}</div>
+            {% endif %}
+
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <!-- Register Form -->
+    <div id="signup-form" class="auth-form" style="display:none;">
+        <form method="post" action="{% url 'auth_screen' %}">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="register">
+
+            {% for field in register_form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="errorlist">{{ field.errors }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            {% if register_form.non_field_errors %}
+                <div class="errorlist">{{ register_form.non_field_errors }}</div>
+            {% endif %}
+
+            <button type="submit">Sign Up</button>
+        </form>
+    </div>
+
+    <!-- Forgot Password -->
+    <div id="forgot-form" class="auth-form" style="display:none;">
+        <form method="post" action="{% url 'password_reset' %}">
+            {% csrf_token %}
+            {{ password_reset_form.as_p }}
+            <button type="submit">Reset Password</button>
+        </form>
+    </div>
+</section>
+
+<script>
+    function showForm(id) {
+        document.querySelectorAll('.auth-form').forEach(f => f.style.display = 'none');
+        document.getElementById(id + '-form').style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
