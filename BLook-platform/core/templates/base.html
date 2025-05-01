@@ -1,10 +1,49 @@
+{% load static %}
 <!-- templates/base.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>BLook</title>
+    <link rel="stylesheet" href="{% static 'core/css/basestyles.css' %}">
 </head>
 <body>
+    <nav class="nav-bar">
+        <a href="{% url 'home' %}">
+            <img src="{% static 'core/images/placeholder-img.png' %}" class="logo"> <!--logo-->
+        </a>
+        <div class="nav-buttons">
+            <div class="nav-options">
+                <button class="nav-option">Browse</button>
+                <button class="nav-option">My Reviews</button>
+                <button class="nav-option" onclick="openOverlay()">Add</button>
+            </div>
+            <div class="genre-options">
+                <a href="" class="genre-option">Novels</a>
+                <a href="" class="genre-option">Comics</a>
+                <a href="" class="genre-option">Manga+</a>
+                <a href="" class="genre-option">WebNovels</a>
+                <a href="" class="genre-option">Other</a>
+            </div>
+        </div>
+
+        <div id="add-overlay" class="overlay">
+            <div class="overlay-content">
+                <h2>Choose an option</h2>
+                <button onclick="window.location.href='/core/search/'">Search for a book</button>
+                <button onclick="window.location.href='/core/upload/'">Upload a new book</button>                            
+                <button class="close-btn" onclick="closeOverlay()">Cancel</button>
+            </div>
+        </div>
+        
+
+        <form action="{% url 'browse' %}" method="get" class="search-bar">
+            <input type="text" name="q" placeholder="Search books or user...">
+            <button type="submit">Search</button>
+        </form>
+
+        <img src="" class="profile-pic"> <!--profile pic of user-->
+    </nav>
+
     <header>
         <h1>BLook 📚</h1>
         {% if user.is_authenticated %}
@@ -16,6 +55,17 @@
         {% endif %}
     </header>
     <hr>
+
+    <script>
+        function openOverlay() {
+            document.getElementById("add-overlay").style.display = "flex";
+        }
+    
+        function closeOverlay() {
+            document.getElementById("add-overlay").style.display = "none";
+        }
+    </script>
+    
     {% block content %}{% endblock %}
 </body>
 </html>

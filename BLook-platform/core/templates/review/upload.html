@@ -1,0 +1,42 @@
+<!-- Add Review / Upload Book to Review Page -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>thi is book upload</h1>
+<section class="book-content">
+
+    <div class="book-details">
+        <div class="book-cover">
+            <img src="">
+        </div>
+        <form method="post" action="{% url 'upload_review' %}">
+            {% csrf_token %}
+            <label for="title">Title:</label>
+            <input id="title" name="title" placeholder="Book Title...">
+
+            <label for="author">Author:</label>
+            <input id="author" name="author" placeholder="Author Name...">
+
+            <label for="synopsis">Synopsis:</label>
+            <input id="synopsis" name="synopsis" placeholder="Book Synopsis...">
+
+            <label for="genre">Genre:</label>
+            <input id="genre" name="genre" placeholder="Genre...">
+
+            <label for="lit_type">Type:</label>
+            <input id="lit_type" name="lit_type" placeholder="Type...">
+
+            <label for="cover_image_url">Book Cover:</label>
+            <input id="cover_image_url" name="cover_image_url">
+
+            <label for="rating">Rating:</label>
+            <input id="rating" name="rating" placeholder="Rating...">
+
+            <label for="review">Review:</label>
+            <input id="review" name="review" placeholder="Write your review...">
+        
+            <button type="submit">ADD</button>
+        </form>
+    </div>
+</section>
+{% endblock %}
