@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordResetForm
 from django.contrib.auth import login, authenticate
 from django.contrib import messages
+from django.contrib.messages import get_messages
 
 def index(request):
     return HttpResponse("Hello, world. You're at the core index.")
@@ -11,9 +12,13 @@ def home(request):
     return render(request, 'main/home.html')
 
 def auth_screen(request):
+# Clear stale messages if user is not authenticated (i.e. just logged out)
+    if not request.user.is_authenticated:
+        list(get_messages(request))  # Clears the messages
+
     login_form = AuthenticationForm()
     register_form = UserCreationForm()
-    password_reset_form = PasswordResetForm()
+    password_reset_form = PasswordResetForm()   
 
     if request.method == 'POST':
         action = request.POST.get('action')

@@ -20,10 +20,13 @@
     {% if messages %}
         <ul class="messages">
             {% for message in messages %}
-                <li>{{ message }}</li>
+                {% if user.is_authenticated %}
+                    <li>{{ message }}</li>
+                {% endif %}
             {% endfor %}
         </ul>
     {% endif %}
+
 
     <div class="form-header">
         <h1 id="form-title">Sign in to your account</h1>
