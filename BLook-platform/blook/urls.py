@@ -1,5 +1,5 @@
 """
-URL configuration for booknest project.
+URL configuration for blook project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.2/topics/http/urls/
@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from core.views import auth_screen
 
 urlpatterns = [
     path('core/', include("core.urls")),

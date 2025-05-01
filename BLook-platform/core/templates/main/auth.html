@@ -1,0 +1,114 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLook</title>
+    <link rel="stylesheet" href="{% static 'core/css/authstyles.css' %}">
+</head>
+<body>
+
+<!-- Authentication Page -->
+
+<section class="form-header">
+    <img src=""> <!-- logo -->
+    <h1>BLook</h1>  <!--Temp.-->
+</section>
+
+<div class="forms-container">
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                {% if user.is_authenticated %}
+                    <li>{{ message }}</li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+
+    <div class="form-header">
+        <h1 id="form-title">Sign in to your account</h1>
+    </div>
+
+    <!-- Login Form -->
+    <div id="login-form" class="auth-form">
+        <form method="post" action="{% url 'auth_screen' %}">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="login">
+
+            {% for field in login_form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="errorlist">{{ field.errors }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            {% if login_form.non_field_errors %}
+                <div class="errorlist">{{ login_form.non_field_errors }}</div>
+            {% endif %}
+            <span onclick="showForm('forgot')">Forgot Password?</span>
+            <button type="submit">Login</button>
+            <span onclick="showForm('signup')">Create Account</span>
+        </form>
+    </div>
+
+    <!-- Register Form -->
+    <div id="signup-form" class="auth-form" style="display:none;">
+        <form method="post" action="{% url 'auth_screen' %}">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="register">
+
+            {% for field in register_form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="errorlist">{{ field.errors }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            {% if register_form.non_field_errors %}
+                <div class="errorlist">{{ register_form.non_field_errors }}</div>
+            {% endif %}
+
+            <button type="submit">Sign Up</button>
+            <span onclick="showForm('login')">Have an account?</span>
+        </form>
+    </div>
+
+    <!-- Forgot Password -->
+    <div id="forgot-form" class="auth-form" style="display:none;">
+        <form method="post" action="{% url 'password_reset' %}">
+            {% csrf_token %}
+            {{ password_reset_form.as_p }}
+            <button type="submit">Reset Password</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function showForm(id) {
+        document.querySelectorAll('.auth-form').forEach(f => f.style.display = 'none');
+        document.getElementById(id + '-form').style.display = 'block';
+
+        const title = document.getElementById('form-title');
+        if (id === 'login') {
+            title.textContent = "Sign in to your account";
+        } else if (id === 'signup') {
+            title.textContent = "Create a new account";
+        } else if (id === 'forgot') {
+            title.textContent = "Reset your password";
+        }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        showForm('login');  
+    });
+</script>
+
+</body>
+</html>
