@@ -1,8 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BLook</title>
-    <link rel="stylesheet" href="authstyles.css">
+    <link rel="stylesheet" href="{% static 'core/css/authstyles.css' %}">
 </head>
 <body>
 
@@ -10,10 +13,10 @@
 
 <section class="form-header">
     <img src=""> <!-- logo -->
-    <h1>BLook</h1>
+    <h1>BLook</h1>  <!--Temp.-->
 </section>
 
-<section class="forms-container">
+<div class="forms-container">
     {% if messages %}
         <ul class="messages">
             {% for message in messages %}
@@ -22,10 +25,8 @@
         </ul>
     {% endif %}
 
-    <div class="tabs">
-        <button onclick="showForm('login')">Login</button>
-        <button onclick="showForm('signup')">Sign Up</button>
-        <button onclick="showForm('forgot')">Forgot Password</button>
+    <div class="form-header">
+        <h1 id="form-title">Sign in to your account</h1>
     </div>
 
     <!-- Login Form -->
@@ -46,8 +47,9 @@
             {% if login_form.non_field_errors %}
                 <div class="errorlist">{{ login_form.non_field_errors }}</div>
             {% endif %}
-
+            <span onclick="showForm('forgot')">Forgot Password?</span>
             <button type="submit">Login</button>
+            <span onclick="showForm('signup')">Create Account</span>
         </form>
     </div>
 
@@ -71,6 +73,7 @@
             {% endif %}
 
             <button type="submit">Sign Up</button>
+            <span onclick="showForm('login')">Have an account?</span>
         </form>
     </div>
 
@@ -82,13 +85,26 @@
             <button type="submit">Reset Password</button>
         </form>
     </div>
-</section>
+</div>
 
 <script>
     function showForm(id) {
         document.querySelectorAll('.auth-form').forEach(f => f.style.display = 'none');
         document.getElementById(id + '-form').style.display = 'block';
+
+        const title = document.getElementById('form-title');
+        if (id === 'login') {
+            title.textContent = "Sign in to your account";
+        } else if (id === 'signup') {
+            title.textContent = "Create a new account";
+        } else if (id === 'forgot') {
+            title.textContent = "Reset your password";
+        }
     }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        showForm('login');  
+    });
 </script>
 
 </body>

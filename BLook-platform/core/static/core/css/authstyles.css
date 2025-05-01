@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+html {
+    height: 800px;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;    /* was planning to have a bg img as a background*/
+}
+
+.form-header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10% auto 0;
+}
+
+.forms-container {
+    width: 50%;
+    min-height: 50%;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    background-color: grey;
+}
+
+.auth-form form {
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-group input {
+    width: 90%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+
+.auth-form span {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    cursor: pointer;
+    color: #007bff;
+    font-size: 12px;
+}
+
+.auth-form button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+
+}
+
+.auth-form span:hover {
+    text-decoration: underline;
+}
+
+.errorlist {
+    color: red;
+    margin-top: 4px;    
+    font-size: 0.9em;
+}
+
+.messages {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1em;
+}
+
+.messages li {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+.messages li.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+.messages li.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
