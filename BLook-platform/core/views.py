@@ -1,11 +1,12 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordResetForm
 from django.contrib.auth import login, authenticate
 from django.contrib import messages
 from django.contrib.messages import get_messages
-from .models import Book, Review
+from .models import Book, Review, Comment
 from django.db.models import Q
+from django.http import JsonResponse
 
 
 def home(request):
@@ -100,3 +101,66 @@ def add_review(request):
 
 def view_profile(request):
     return render(request, 'main/profile.html')
+def search_book(request):
+    return render(request, 'review/search.html')
+
+def ajax_search_books(request):
+    query = request.GET.get("q", "")
+    books = Book.objects.filter(Q(title__icontains=query) | Q(author__icontains=query))
+    data = [{"id": b.id, "title": b.title, "author": b.author} for b in books]
+
+    return JsonResponse({"results": data})
+
+def add_review(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+
+    if request.method == 'POST':
+        rating = request.POST.get('rating')
+        title = request.POST.get('title')
+        text = request.POST.get('review')
+        Review.objects.create(
+            book=book,
+            user=request.user,
+            rating=rating,
+            title=title,
+            text=text
+        )
+        return redirect('home')
+    return render(request, 'review/add.html', {'book': book})
+
+def my_reviews(request):
+    user = request.user
+    reviews = Review.objects.filter(user=user)
+
+    return render(request, 'review/my_reviews.html', {'reviews': reviews})
+
+
+def book_detail(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    reviews = Review.objects.filter(book=book)
+    comments = Comment.objects.filter(review__book=book)
+
+    return render(request, 'book/detail.html', {
+        'book': book,
+        'reviews': reviews,
+        'comments': comments,
+        }
+    )
+
+def edit_review(request, review_id):
+    review = get_object_or_404(Review, id=review_id, user=request.user)
+
+    if request.method == 'POST':
+        review.title = request.POST.get('title')
+        review.rating = request.POST.get('rating')
+        review.text = request.POST.get('review')
+        review.save()
+        return redirect('my_reviews')
+
+    return render(request, 'review/edit_review.html', {'review': review})
+
+def delete_review(request, review_id):
+    review = get_object_or_404(Review, id=review_id, user=request.user)
+    if request.method == "POST":
+        review.delete()
+        return redirect('my_reviews')
