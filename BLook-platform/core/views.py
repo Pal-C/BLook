@@ -4,7 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, Pass
 from django.contrib.auth import login, authenticate
 from django.contrib import messages
 from django.contrib.messages import get_messages
-from .models import Book, Review
+from .models import Book, Review, Comment
 from django.db.models import Q
 from django.http import JsonResponse
 
@@ -125,3 +125,15 @@ def add_review(request, book_id):
 
 def my_reviews(request):
     return render(request, 'review/my_reviews.html')
+
+def book_detail(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    reviews = Review.objects.filter(book=book)
+    comments = Comment.objects.filter(review__book=book)
+
+    return render(request, 'book/detail.html', {
+        'book': book,
+        'reviews': reviews,
+        'comments': comments,
+        }
+    )
