@@ -124,7 +124,11 @@ def add_review(request, book_id):
     return render(request, 'review/add.html', {'book': book})
 
 def my_reviews(request):
-    return render(request, 'review/my_reviews.html')
+    user = request.user
+    reviews = Review.objects.filter(user=user)
+
+    return render(request, 'review/my_reviews.html', {'reviews': reviews})
+
 
 def book_detail(request, book_id):
     book = get_object_or_404(Book, id=book_id)
@@ -137,3 +141,21 @@ def book_detail(request, book_id):
         'comments': comments,
         }
     )
+
+def edit_review(request, review_id):
+    review = get_object_or_404(Review, id=review_id, user=request.user)
+
+    if request.method == 'POST':
+        review.title = request.POST.get('title')
+        review.rating = request.POST.get('rating')
+        review.text = request.POST.get('review')
+        review.save()
+        return redirect('my_reviews')
+
+    return render(request, 'review/edit_review.html', {'review': review})
+
+def delete_review(request, review_id):
+    review = get_object_or_404(Review, id=review_id, user=request.user)
+    if request.method == "POST":
+        review.delete()
+        return redirect('my_reviews')
