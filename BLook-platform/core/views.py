@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordResetForm
 from django.contrib.auth import login, authenticate
@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.messages import get_messages
 from .models import Book, Review
 from django.db.models import Q
+from django.http import JsonResponse
 
 
 def home(request):
@@ -95,5 +96,32 @@ def upload_review(request):
 
     return render(request, 'review/upload.html')
 
-def add_review(request):
+def search_book(request):
     return render(request, 'review/search.html')
+
+def ajax_search_books(request):
+    query = request.GET.get("q", "")
+    books = Book.objects.filter(Q(title__icontains=query) | Q(author__icontains=query))
+    data = [{"id": b.id, "title": b.title, "author": b.author} for b in books]
+
+    return JsonResponse({"results": data})
+
+def add_review(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+
+    if request.method == 'POST':
+        rating = request.POST.get('rating')
+        title = request.POST.get('title')
+        text = request.POST.get('review')
+        Review.objects.create(
+            book=book,
+            user=request.user,
+            rating=rating,
+            title=title,
+            text=text
+        )
+        return redirect('home')
+    return render(request, 'review/add.html', {'book': book})
+
+def my_reviews(request):
+    return render(request, 'review/my_reviews.html')

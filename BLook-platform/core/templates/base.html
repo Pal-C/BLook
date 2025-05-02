@@ -13,8 +13,8 @@
         </a>
         <div class="nav-buttons">
             <div class="nav-options">
-                <button class="nav-option">Browse</button>
-                <button class="nav-option">My Reviews</button>
+                <button class="nav-option" onclick="window.location.href='{% url 'browse' %}'">Browse</button>
+                <button class="nav-option" onclick="window.location.href='{% url 'my_reviews' %}'">My Reviews</button>
                 <button class="nav-option" onclick="openOverlay()">Add</button>
             </div>
             <div class="genre-options">
