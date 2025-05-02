@@ -1,0 +1,52 @@
+
+  
+  .profile-header {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  
+  .profile-pic-wrapper {
+    position: relative;
+  }
+  
+  .profile-picture {
+    width: 30px;
+    height: auto;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ccc;
+  }
+  
+  .edit-btn {
+    background: none;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    color: #666;
+    margin-left: 0.5rem;
+  }
+  
+  .edit-btn:hover {
+    color: #000;
+  }
+  
+  .profile-info h2 {
+    margin: 0;
+  }
+  
+  .change-password-btn {
+    margin-top: 0.5rem;
+    background-color: #4285f4;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .change-password-btn:hover {
+    background-color: #3367d6;
+  }
+  

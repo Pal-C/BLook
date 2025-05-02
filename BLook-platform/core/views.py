@@ -97,3 +97,6 @@ def upload_review(request):
 
 def add_review(request):
     return render(request, 'review/search.html')
+
+def view_profile(request):
+    return render(request, 'main/profile.html')
