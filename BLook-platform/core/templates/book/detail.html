@@ -26,10 +26,35 @@
                 <p class="review-details"><strong>{{ review.user.username }}</strong> rated {{ review.rating }}/5</p>
                 <p class="review-text">{{ review.text }}</p>
             </div>
+            {% for comment in review.comments.all %}
+            <div class="comment-box">
+                <p class="comment-details"><strong>{{ comment.user.username }}</strong><span> {{ comment.created_at }}</span></p> 
+                <p class="comment-text">{{ comment.text }}</p>
+            </div>
+            {% empty %}
+                <p>No comments yet...</p>
+            {% endfor %}
+
+            <button type="button" onclick="toggleCommentForm({{ review.id }})">Add Comment</button>
+
+            <form method="POST" action="{% url 'add_comment' review.id %}" 
+                class="comment-form" id="comment-form-{{ review.id }}" 
+                style="display: none;">
+                {% csrf_token %}
+                <textarea name="comment" required placeholder="Write your comment..."></textarea>
+                <button type="submit">Save</button>
+            </form>
             {% empty %}
                 <p>No reviews yet...</p>
             {% endfor %}
         </div>
     </section>
+
+    <script>
+        function toggleCommentForm(reviewId) {
+            const form = document.getElementById(`comment-form-${reviewId}`);
+            form.style.display = (form.style.display == "none" || form.style.display == "") ? "block" : "none";
+        }
+    </script>
 
 {% endblock %}

@@ -164,3 +164,14 @@ def delete_review(request, review_id):
     if request.method == "POST":
         review.delete()
         return redirect('my_reviews')
+
+def add_comment(request, review_id):
+    if request.method == 'POST':
+        review = get_object_or_404(Review, pk=review_id)
+        Comment.objects.create(
+            review = review,
+            user = request.user,
+            text = request.POST['comment']
+        )
+
+    return redirect('book_detail', book_id=review.book.id)
