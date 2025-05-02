@@ -4,9 +4,9 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, Pass
 from django.contrib.auth import login, authenticate
 from django.contrib import messages
 from django.contrib.messages import get_messages
+from .models import Book, Review
+from django.db.models import Q
 
-def index(request):
-    return HttpResponse("Hello, world. You're at the core index.")
 
 def home(request):
     return render(request, 'main/home.html')
@@ -51,3 +51,49 @@ def auth_screen(request):
 
     return render(request, 'main/auth.html', context)
 
+def browse(request):
+    query = request.GET.get('q')
+    books = Book.objects.all()
+
+    if query:
+        books = books.filter(
+            Q(title__icontains=query) |
+            Q(author__icontains=query) |
+            Q(genre__icontains=query) |
+            Q(added_by__username__icontains=query)
+        )
+    return render(request, 'book/browse.html', {'books': books})
+
+def upload_review(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        author = request.POST.get('author')
+        synopsis = request.POST.get('synopsis')
+        genre = request.POST.get('genre')
+        lit_type = request.POST.get('lit_type')
+        cover_image_url = request.POST.get('cover_image_url')
+        
+
+        rating = request.POST.get('rating')
+        review_text = request.POST.get('review')
+
+        book = Book.objects.create(
+            title=title,
+            author=author,
+            synopsis=synopsis,
+            genre=genre,
+            added_by=request.user,
+            lit_type=lit_type,
+            cover_image_url=cover_image_url)
+        
+        Review.objects.create(book=book,
+                              user=request.user,
+                              text=review_text,
+                              rating=rating)
+
+        return redirect('home')
+
+    return render(request, 'review/upload.html')
+
+def add_review(request):
+    return render(request, 'review/search.html')

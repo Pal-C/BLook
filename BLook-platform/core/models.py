@@ -6,8 +6,10 @@ class Book(models.Model):
     title = models.CharField(max_length=255)
     author = models.CharField(max_length=255)
     genre = models.CharField(max_length=100)
+    synopsis = models.TextField()
+    added_by = models.ForeignKey(User, on_delete=models.CASCADE)
     lit_type = models.CharField(max_length=100)  # e.g. Manga, Novel
-    cover_image_url = models.URLField(blank=True)
+    cover_image_url = models.URLField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.title} by {self.author}"
