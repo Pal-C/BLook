@@ -1,5 +1,4 @@
 {% load static %}
-<!-- templates/base.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,8 +8,9 @@
 <body>
     <nav class="nav-bar">
         <a href="{% url 'home' %}">
-            <img src="{% static 'core/images/placeholder-img.png' %}" class="logo"> <!--logo-->
+            <img src="{% static 'core/images/shblook-long.png' %}" id="logo" class="logo" alt="BLook logo">
         </a>
+
         <div class="nav-buttons">
             <div class="nav-options">
                 <button class="nav-option">Browse</button>
@@ -20,7 +20,7 @@
             <div class="genre-options">
                 <a href="" class="genre-option">Novels</a>
                 <a href="" class="genre-option">Comics</a>
-                <a href="" class="genre-option">Manga+</a>
+                <a href="" class="genre-option">Manga</a>
                 <a href="" class="genre-option">WebNovels</a>
                 <a href="" class="genre-option">Other</a>
             </div>
@@ -29,19 +29,25 @@
         <div id="add-overlay" class="overlay">
             <div class="overlay-content">
                 <h2>Choose an option</h2>
-                <button onclick="window.location.href='/core/search/'">Search for a book</button>
-                <button onclick="window.location.href='/core/upload/'">Upload a new book</button>                            
-                <button class="close-btn" onclick="closeOverlay()">Cancel</button>
+                <button class="overlay-btn" onclick="window.location.href='/core/search/'">Search for a book</button>
+                <button class="overlay-btn" onclick="window.location.href='/core/upload/'">Upload a new book</button>                            
+                <button class="overlay-btn close-btn" onclick="closeOverlay()">Cancel</button>
+
             </div>
         </div>
-        
 
-        <form action="{% url 'browse' %}" method="get" class="search-bar">
-            <input type="text" name="q" placeholder="Search books or user...">
-            <button type="submit">Search</button>
-        </form>
+        <div class="search-wrapper" id="search-wrapper">
+            <input type="text" name="q" id="search-input" placeholder="Search books or users...">
+            <button type="button" id="search-btn">
+                <img id="search-icon" src="{% static 'core/images/search-icon.svg' %}" alt="Search">
+            </button>
+        </div>
 
-        <img src="" class="profile-pic"> <!--profile pic of user-->
+        <div class="profile-container">
+            <a href="{% url 'profile' %}">
+                <img src="{% static 'core/images/default-profile.jpg' %}" class="profile-pic">
+            </a>
+        </div>
     </nav>
 
     <header>
@@ -60,12 +66,51 @@
         function openOverlay() {
             document.getElementById("add-overlay").style.display = "flex";
         }
-    
+
         function closeOverlay() {
             document.getElementById("add-overlay").style.display = "none";
         }
+
+        const logo = document.getElementById('logo');
+        function updateLogo() {
+            if (window.innerWidth <= 768) {
+                logo.src = "{% static 'core/images/blook-small.png' %}";
+            } else {
+                logo.src = "{% static 'core/images/shblook-long.png' %}";
+            }
+        }
+
+        window.addEventListener('resize', updateLogo);
+        window.addEventListener('load', updateLogo);
+
+        const searchWrapper = document.getElementById("search-wrapper");
+        const searchInput = document.getElementById("search-input");
+        const searchBtn = document.getElementById("search-btn");
+
+        const searchIconPath = "{% static 'core/images/search-icon.svg' %}";
+
+        searchBtn.addEventListener("click", function () {
+            const isMobile = window.innerWidth <= 768;
+            const isExpanded = searchWrapper.classList.contains("expanded");
+
+            if (isMobile) {
+                if (!isExpanded) {
+                    searchWrapper.classList.add("expanded");
+                    searchInput.focus();
+                } else if (searchInput.value.trim()) {
+                    window.location.href = `{% url 'browse' %}?q=` + encodeURIComponent(searchInput.value);
+                } else {
+                    searchWrapper.classList.remove("expanded");
+                }
+            } else {
+                const query = searchInput.value.trim();
+                if (query) {
+                    window.location.href = `{% url 'browse' %}?q=` + encodeURIComponent(query);
+                }
+            }
+        });
     </script>
-    
+
     {% block content %}{% endblock %}
 </body>
 </html>

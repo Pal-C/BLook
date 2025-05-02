@@ -9,4 +9,5 @@ urlpatterns = [
     path("browse/", views.browse, name='browse'),
     path("upload/", views.upload_review, name='upload_review'),
     path("add/", views.add_review, name='add_review'), # reminder to add <int:book_id>/
+    path("profile/", views.view_profile, name='profile'),
 ]
