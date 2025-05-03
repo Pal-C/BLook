@@ -8,7 +8,6 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(next_page='auth_screen'), name='custom_logout'),
     path("browse/", views.browse, name='browse'),
     path("upload/", views.upload_review, name='upload_review'),
-    path("add/", views.add_review, name='add_review'), # reminder to add <int:book_id>/
     path("profile/", views.view_profile, name='profile'),
     path("search/", views.search_book, name='search_book'),
     path("ajax/search-books/", views.ajax_search_books, name='ajax_search_books'),

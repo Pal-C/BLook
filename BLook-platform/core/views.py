@@ -96,11 +96,26 @@ def upload_review(request):
 
     return render(request, 'review/upload.html')
 
-def add_review(request):
-    return render(request, 'review/search.html')
+def add_review(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+
+    if request.method == 'POST':
+        rating = request.POST.get('rating')
+        title = request.POST.get('title')
+        text = request.POST.get('review')
+        Review.objects.create(
+            book=book,
+            user=request.user,
+            rating=rating,
+            title=title,
+            text=text
+        )
+        return redirect('home')
+    return render(request, 'review/add.html', {'book': book})
 
 def view_profile(request):
     return render(request, 'main/profile.html')
+
 def search_book(request):
     return render(request, 'review/search.html')
 
