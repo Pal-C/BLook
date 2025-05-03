@@ -125,7 +125,7 @@ def add_review(request, book_id):
             title=title,
             text=text
         )
-        return redirect('home')
+        return redirect('book_detail', book.id)
     return render(request, 'review/add.html', {'book': book})
 
 def my_reviews(request):
@@ -175,3 +175,9 @@ def add_comment(request, review_id):
         )
 
     return redirect('book_detail', book_id=review.book.id)
+def delete_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id, user=request.user)
+    if request.method == 'POST':
+        comment.delete()
+    
+    return redirect('book_detail', comment.review.book.id)
