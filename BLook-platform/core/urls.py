@@ -8,6 +8,14 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(next_page='auth_screen'), name='custom_logout'),
     path("browse/", views.browse, name='browse'),
     path("upload/", views.upload_review, name='upload_review'),
-    path("add/", views.add_review, name='add_review'), # reminder to add <int:book_id>/
     path("profile/", views.view_profile, name='profile'),
+    path("search/", views.search_book, name='search_book'),
+    path("ajax/search-books/", views.ajax_search_books, name='ajax_search_books'),
+    path("review/add/<int:book_id>/", views.add_review, name='add_review'),
+    path("my_reviews/", views.my_reviews, name='my_reviews'),
+    path("book/<int:book_id>/", views.book_detail, name='book_detail'),
+    path('review/edit/<int:review_id>/', views.edit_review, name='edit_review'),
+    path('review/delete/<int:review_id>/', views.delete_review, name='delete_review'),
+    path('review/<int:review_id>/comment/', views.add_comment, name='add_comment'),
+    path('comment/delete/<int:comment_id>', views.delete_comment, name='delete_comment'),
 ]

@@ -1,10 +1,169 @@
 <!-- The Home Page -->
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-<h2>Welcome to BLook</h2>
-<p>Discover and review books here.</p>
+<link rel="stylesheet" href="{% static 'core/css/homestyles.css' %}">
 
+<section class="book-spotlight">
+    <img src="{% static 'core/images/book-img.png' %}">
+    <div class="spot-content">
+        <h2>Title</h2>
+        <div class="spot-sub">
+            <h4 style="grid-row: 1; grid-column: 1;">Author</h4>
+            <h4 style="grid-row: 2; grid-column: 1;">Top Reviewed!</h4>
+            <h4 style="grid-row: 1; grid-column: 2;">Ratings</h4>
+            <h4 style="grid-row: 2; grid-column: 2;">Reviews</h4>
+        </div>
+        <p class="synopsis">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+            sed do eiusmod tempor incididunt ut labore et dolore magna
+            aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+            ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            Duis aute irure dolor in reprehenderit in voluptate
+            velit esse cillum dolore eu fugiat nulla pariatur.
+            Excepteur sint occaecat cupidatat non proident,
+            sunt in culpa qui officia deserunt mollit
+            anim id est laborum.
+        </p>
+    </div>
+</section>
+<section class="top-rated">
+    <div class="category-head">
+        <h2>Top Rated</h2>
+    </div>
+
+    <div class="scroll-cat">
+        <button class="left-scroll" onclick="scrollCat(-1)">&#10094;</button>
+        <div class="carousel" id="carousel">
+            {% for book in top_books %}
+            <div class="cat-card">
+                <a href="{% url 'book_detail' book.id %}">
+                    {% if book.cover_image_url %}
+                        <img src="{{ book.cover_image_url }}" alt="{{ book.title }} Cover">
+                    {% else %}
+                        <img src="{% static 'core/images/book-img.png' %}" alt="Default Cover">
+                    {% endif %}
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        <button class="right-scroll" onclick="scrollCat(1)">&#10095;</button>
+    </div>
+</section>
+
+<section class="trending">
+    <section class="trend-books">
+        <div class="category-head">
+            <h2>Trending</h2>
+        </div>
+        <div class="trend-grid">
+            {% for book in trending_books %}
+            <div class="trend-card">
+                {% if book.cover_image_url %}
+                    <img src="{{ book.cover_image_url }}" alt="{{ book.title }} Cover">
+                {% else %}
+                    <img src="{% static 'core/images/book-img.png' %}" alt="Default Cover">
+                {% endif %}
+                <h1>#{{ forloop.counter }}</h1>
+                <div class="card-details">
+                    <h2>{{ book.title }}</h2>
+                    <h3>{{ book.author }}</h3>
+                    <h3>{{ book.recent_avg|floatformat:1 }}/5</h3>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    <section class="top-reviewers">
+        <div class="category-head">
+            <h2>Top Reviewers</h2>
+        </div>
+        <div class="cat-tabs">
+
+        </div>
+        {% for user in top_reviewers %}
+        <div class="reviewer-card">
+            <img src="{% static '' %}">
+            <div class="reviewer-card-details">
+                <h3>{{ user.username }}</h3>
+                <p>{{ user.review_count }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </section>
+</section>
+
+<section class="lit-section">
+    <section class="lit-cat">
+        <div lit-title>
+            <h2>Novels</h2>
+        </div>
+        <div class="mini-carousel" id="carousel-novels">
+            {% for book in novel_books %}
+            <div class="mini-cat-card">
+                {% if book.cover_image_url %}
+                    <img src="{{ book.cover_image_url }}">
+                {% else %}
+                <img src="{% static 'core/images/book-img.png' %}">
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+    </section>
+    <section class="lit-cat">
+        <div lit-title>
+            <h2>Comics</h2>
+        </div>
+        <div class="mini-carousel" id="carousel-comic">
+            {% for book in comics_books %}
+            <div class="mini-cat-card">
+                {% if book.cover_image_url %}
+                <img src="{{ book.cover_image_url }}">
+                {% else %}
+                <img src="{% static 'core/images/book-img.png' %}">
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="lit-cat">
+        <div lit-title>
+            <h2>Manga+</h2>
+        </div>
+        <div class="mini-carousel" id="carousel-manga">
+            {% for book in manga_plus_books %}
+            <div class="mini-cat-card">
+                {% if book.cover_image_url %}
+                <img src="{{ book.cover_image_url }}">
+                {% else %}
+                <img src="{% static 'core/images/book-img.png' %}">
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="lit-cat">
+        <div lit-title>
+            <h2>WebComics</h2>
+        </div>
+        <div class="mini-carousel" id="carousel-web">
+            {% for book in webcomic_books %}
+            <div class="mini-cat-card">
+                {% if book.cover_image_url %}
+                <img src="{{ book.cover_image_url }}">
+                {% else %}
+                <img src="{% static 'core/images/book-img.png' %}">
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+</section>
 {% if user.is_authenticated %}
     <form method="post" action="{% url 'custom_logout' %}">
         {% csrf_token %}
@@ -12,5 +171,11 @@
     </form>
 
 {% endif %}
-
+    <script>
+        function scrollCat(direction) {
+        const carousel = document.getElementById('carousel');
+        const cardWidth = carousel.querySelector('.cat-card').offsetWidth + 16;
+        carousel.scrollBy({ left: direction * cardWidth, behavior: 'smooth' });
+            }
+  </script>
 {% endblock %}

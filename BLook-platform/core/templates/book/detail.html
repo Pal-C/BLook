@@ -1,1 +1,97 @@
 <!-- Book Focus View -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <section class="detail-content">
+        <div class="book-content">
+            {% if book.cover_image_url %}
+            <img src="{{ book.cover_image_url }}" alt="{{ book.title }} Cover" class="book-cover">
+            {% endif %}
+
+            <h2>{{ book.title }}</h2>
+            <p class="sub-details"><strong>Author:</strong> {{ book.author }}</p>
+            <p class="sub-details"><strong>Genre:</strong> {{ book.genre }}</p>
+            <p class="sub-details"><strong>Type:</strong> {{ book.lit_type }}</p>
+            <p class="summary">{{ book.synopsis|truncatewords:30 }}</p>
+            {% if ave_rating %}
+                <p><strong>Rating: </strong> {{ ave_rating|floatformat:1 }}/5</p>
+            {% else %}
+                <p><strong>No ratings yet.</strong></p>
+            {% endif %}
+            <div class="options">
+                <button class="option">+</button>
+                <a href="{% url 'add_review' book.id %}">Add Review</a>
+            </div>
+        </div>
+        <div class="reviews">
+            <h2>Reviews</h2>
+            {% for review in reviews %}
+            <div class="review">
+                <p class="review-details"><strong>{{ review.user.username }}</strong> rated {{ review.rating }}/5</p>
+                <p class="review-details">{{ review.title }}</p>
+                <p class="review-text">{{ review.text }}</p>
+            </div>
+            {% for comment in review.comments.all %}
+            
+            <div class="comment-box">
+                <p class="comment-details"><strong>{{ comment.user.username }}</strong><span> {{ comment.created_at }}</span></p> 
+                <p class="comment-text">{{ comment.text }}</p>
+                {% if comment.user == request.user %}
+                    <button type="button" class="delete-btn" onclick="openDeleteModal(this)"
+                    data-url="{% url 'delete_comment' comment.id %}">Delete</button>        
+                {% endif %}
+            </div>
+            {% empty %}
+                <p>No comments yet...</p>
+            {% endfor %}
+
+            <button type="button" onclick="toggleCommentForm({{ review.id }})">Add Comment</button>
+
+            <form method="POST" action="{% url 'add_comment' review.id %}" 
+                class="comment-form" id="comment-form-{{ review.id }}" 
+                style="display: none;">
+                {% csrf_token %}
+                <textarea name="comment" required placeholder="Write your comment..."></textarea>
+                <button type="submit">Save</button>
+            </form>
+        </div>
+
+        {% empty %}
+            <p>No reviews yet...</p>
+        {% endfor %}
+
+        <div id="deleteModal" class="modal" style="display: none;">
+            <div class="modal-content">
+              <p>Are you sure you want to delete this comment?</p>
+              <form method="POST" id="deleteForm">
+                {% csrf_token %}
+                <button type="submit">Yes, delete</button>
+                <button type="button" onclick="closeModal()">Cancel</button>
+              </form>
+            </div>
+          </div>
+    </section>
+
+    <script>
+        function toggleCommentForm(reviewId) {
+            const form = document.getElementById(`comment-form-${reviewId}`);
+            form.style.display = (form.style.display == "none" || form.style.display == "") ? "block" : "none";
+        }
+    </script>
+
+    <script>
+        function openDeleteModal(buttonElement) {
+            const modal = document.getElementById('deleteModal');
+            const form = document.getElementById('deleteForm');
+            form.action = buttonElement.getAttribute("data-url");
+            modal.style.display = 'flex';
+        }
+
+
+        function closeModal() {
+            document.getElementById('deleteModal').style.display = 'none';
+        }
+    </script>
+
+{% endblock %}

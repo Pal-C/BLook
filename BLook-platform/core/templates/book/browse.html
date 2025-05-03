@@ -1,14 +1,38 @@
 <!-- Browsing Page (active when user uses the search bar) -->
 {% extends 'base.html' %}
+{% load static %}
 
-{% block  content %}
- <h1>Browse Books</h1>
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'core/css/browsestyles.css' %}">
+{% endblock %}
+
+
+{% block content %}
     <section class="browse-results">
-        <h3>Searching for results</h3> <!-- Searching for <query> -->
+        <div class="browse-details">
+            <h3>Searching for results...</h3>
+            <h3>Results found {{ books|length}}</h3>
+        </div>
+
         <div class="browse-list">
-            <div class="browse-item">
+            {% for book in books %}
+            <div class="browse-card">
+                {% if book.cover_image_url %}
+                <img src="{{ book.cover_image_url }}" alt="{{ book.title }} Cover" class="book-cover">
+                {% endif %}
+            <div class="card-details">
+                <a href="{% url 'book_detail' book.id %}"><h2>{{ book.title }}</h2></a> 
+                <p><strong>Author:</strong> {{ book.author }}</p>
+                <p><strong>Genre:</strong> {{ book.genre }}</p>
+                <p><strong>Type:</strong> {{ book.lit_type }}</p>
+                <p>{{ book.synopsis|truncatewords:30 }}</p>
+            </div>
 
             </div>
+            {% empty %}
+            <p>No books found</p>
+            {% endfor %}
         </div>
     </section>
 

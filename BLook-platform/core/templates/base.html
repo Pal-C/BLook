@@ -4,7 +4,7 @@
 <head>
     <title>BLook</title>
     <link rel="stylesheet" href="{% static 'core/css/basestyles.css' %}">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600&display=swap" rel="stylesheet">
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
     <nav class="nav-bar">
@@ -14,15 +14,15 @@
 
         <div class="nav-buttons">
             <div class="nav-options">
-                <button class="nav-option">Browse</button>
-                <button class="nav-option">My Reviews</button>
+                <button class="nav-option" onclick="window.location.href='{% url 'browse' %}'">Browse</button>
+                <button class="nav-option" onclick="window.location.href='{% url 'my_reviews' %}'">My Reviews</button>
                 <button class="nav-option" onclick="openOverlay()">Add</button>
             </div>
             <div class="genre-options">
-                <a href="" class="genre-option">Novels</a>
-                <a href="" class="genre-option">Comics</a>
-                <a href="" class="genre-option">Manga</a>
-                <a href="" class="genre-option">WebNovels</a>
+                <a href="{% url 'browse' %}?lit_group=Novels" class="genre-option">Novels</a>
+                <a href="{% url 'browse' %}?lit_group=Comics" class="genre-option">Comics</a>
+                <a href="{% url 'browse' %}?lit_group=Manga_plus" class="genre-option">Manga+</a>
+                <a href="{% url 'browse' %}?lit_group=WebComics" class="genre-option">WebNovels</a>
                 <a href="" class="genre-option">Other</a>
             </div>
         </div>
@@ -50,18 +50,6 @@
             </a>
         </div>
     </nav>
-
-    <header>
-        <h1>BLook 📚</h1>
-        {% if user.is_authenticated %}
-            Welcome, {{ user.username }} |
-            <a href="{% url 'logout' %}">Logout</a>
-        {% else %}
-            <a href="{% url 'login' %}">Login</a> |
-            <a href="{% url 'register' %}">Register</a>
-        {% endif %}
-    </header>
-    <hr>
 
     <script>
         function openOverlay() {

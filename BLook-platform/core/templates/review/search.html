@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Search for a book to review</h2>
+<input type="text" id="search-input2" placeholder="Search by title or author...">
+<div id="results-container"></div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const input = document.getElementById("search-input2");
+        const container = document.getElementById("results-container");
+    
+        input.addEventListener("input", function () {
+            const query = this.value;
+            if (query.length < 2) return;
+    
+            fetch(`/core/ajax/search-books/?q=${encodeURIComponent(query)}`)
+                .then(res => res.json())
+                .then(data => {
+                    container.innerHTML = "";
+    
+                    if (data.results.length === 0) {
+                        container.innerHTML = "<p>No books found.</p>";
+                        return;
+                    }
+    
+                    data.results.forEach(book => {
+                        const bookItem = document.createElement("div");
+                        bookItem.classList.add("book-result");
+                        bookItem.innerHTML = `
+                            <strong>${book.title}</strong> by ${book.author}
+                            <a href="/core/review/add/${book.id}/">Review this book</a>
+                        `;
+                        container.appendChild(bookItem);
+                    });
+                })
+                .catch(err => {
+                    container.innerHTML = "<p>Error fetching results.</p>";
+                    console.error(err);
+                });
+        });
+    });
+    </script>
+    
+    
+{% endblock %}
