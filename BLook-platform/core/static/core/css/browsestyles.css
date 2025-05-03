@@ -45,15 +45,11 @@ a {
     background: #F8F9FA;
 }
 
-.card-details {
-    
-}
 .book-cover {
-    
     width: 150px;
     height: 200px;
     max-height: 200px;
     object-fit: cover;
     border-radius: 5px;
-    margin: 10px;
+    margin: 10px 10px 10px 0;
 }

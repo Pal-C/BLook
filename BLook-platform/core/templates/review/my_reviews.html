@@ -2,20 +2,36 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'core/css/reviewstyles.css' %}">
+{% endblock %}
+
+
 {% block content %}
 <section class="my-reviewcontent">
     {% for review in reviews %}
     <div class="review" id="review-{{ review.id }}">
         <form method="POST" action="{% url 'edit_review' review.id %}" class="edit-form">
             {% csrf_token %}
-            <img src="{{ review.book.cover_image_url }}" alt="{{ review.book.title }} Cover" class="book-cover">
-            <h2>{{ review.book.title }}</h2>
-    
-            <input type="text" name="title" value="{{ review.title }}" class="editable" readonly>
-    
-            <input type="number" name="rating" value="{{ review.rating }}" min="1" max="5" class="editable" readonly>
-    
-            <textarea name="review" class="editable" readonly>{{ review.text }}</textarea>
+            
+            <div class="review-content">
+                <img src="{{ review.book.cover_image_url }}" alt="{{ review.book.title }} Cover" class="book-cover">
+            <section class="deets">
+                <div class="book-details">
+                    <h2>{{ review.book.title }}</h2>
+                    <h3><strong>Author:</strong> {{ review.book.author }}</h3>
+                    <h3><strong>Genre:</strong> {{ review.book.genre }}</h3>
+                </div>
+                <div class="review-fields">
+                    <input type="text" name="title" value="{{ review.title }}" class="editable" readonly>
+            
+                    <input type="number" name="rating" value="{{ review.rating }}" min="1" max="5" class="editable" readonly>
+            
+                    <textarea name="review" class="editable" readonly>{{ review.text }}</textarea>
+                </div>
+            
+            </section>
+        </div>
     
             <p>{{ review.created_at }}</p>
     
