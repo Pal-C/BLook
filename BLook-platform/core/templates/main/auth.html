@@ -10,13 +10,13 @@
 <body>
 
 <!-- Authentication Page -->
-
 <section class="form-header">
-    <img src=""> <!-- logo -->
-    <h1>BLook</h1>  <!--Temp.-->
+    <h1>Welcome to BookLook!</h1> <!-- Title -->
 </section>
 
 <div class="forms-container">
+    <img src="{% static 'core/images/shblook-long.png' %}" class="logo-auth"> 
+    <h1 id="form-title">Sign in to your account</h1> 
     {% if messages %}
         <ul class="messages">
             {% for message in messages %}
@@ -26,11 +26,6 @@
             {% endfor %}
         </ul>
     {% endif %}
-
-
-    <div class="form-header">
-        <h1 id="form-title">Sign in to your account</h1>
-    </div>
 
     <!-- Login Form -->
     <div id="login-form" class="auth-form">
@@ -57,37 +52,51 @@
     </div>
 
     <!-- Register Form -->
-    <div id="signup-form" class="auth-form" style="display:none;">
-        <form method="post" action="{% url 'auth_screen' %}">
-            {% csrf_token %}
-            <input type="hidden" name="action" value="register">
+        <div id="signup-form" class="auth-form" style="display:none;">
+            <form method="post" action="{% url 'auth_screen' %}">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="register">
 
-            {% for field in register_form %}
                 <div class="form-group">
-                    {{ field.label_tag }}
-                    {{ field }}
-                    {% if field.errors %}
-                        <div class="errorlist">{{ field.errors }}</div>
-                    {% endif %}
+                    <label for="email">Email</label>
+                    <input type="email" name="email" id="email">
                 </div>
-            {% endfor %}
-            {% if register_form.non_field_errors %}
-                <div class="errorlist">{{ register_form.non_field_errors }}</div>
-            {% endif %}
 
-            <button type="submit">Sign Up</button>
-            <span onclick="showForm('login')">Have an account?</span>
-        </form>
-    </div>
+                {% for field in register_form %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% if field.errors %}
+                            <div class="errorlist">{{ field.errors }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                {% if register_form.non_field_errors %}
+                    <div class="errorlist">{{ register_form.non_field_errors }}</div>
+                {% endif %}
+
+                <button type="submit">Sign Up</button>
+                <button type="button" class="cancel-button" onclick="showForm('login')">Cancel</button>
+            </form>
+        </div>
 
     <!-- Forgot Password -->
-    <div id="forgot-form" class="auth-form" style="display:none;">
-        <form method="post" action="{% url 'password_reset' %}">
-            {% csrf_token %}
-            {{ password_reset_form.as_p }}
-            <button type="submit">Reset Password</button>
-        </form>
-    </div>
+        <div id="forgot-form" class="auth-form" style="display:none;">
+            <form method="post" action="{% url 'password_reset' %}">
+                {% csrf_token %}
+                {% for field in password_reset_form %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% if field.errors %}
+                            <div class="errorlist">{{ field.errors }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                <button type="submit">Reset Password</button>
+                <button type="button" class="cancel-button" onclick="showForm('login')">Cancel</button>
+            </form>
+        </div>        
 </div>
 
 <script>

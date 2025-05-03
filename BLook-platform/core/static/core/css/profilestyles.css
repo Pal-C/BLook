@@ -1,22 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
+
+body {
+  background-color: #c5d1d5;
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  }
+  
+  .prof-wrapper {
+    display: flex;
+    align-items: center; /* Center the content vertically */
+    min-height: 100vh;
+    background-color: #59a7bc;
+  }
+  
+  .prof-main {
+    padding: 2rem;
+    box-sizing: border-box;
+  }
+  
+  .prof-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
   
   .profile-header {
     display: flex;
     align-items: center;
     gap: 2rem;
     flex-wrap: wrap;
+    align-self: center;
   }
   
-  .profile-pic-wrapper {
-    position: relative;
-  }
-  
-  .profile-picture {
-    width: 30px;
+  .prof-picture {
+    width: 120px;
     height: auto;
-    border-radius: 50%;
     object-fit: cover;
+    border-radius: 50%;
     border: 3px solid #ccc;
+  }
+  
+  .prof-info h2 {
+    margin: 0;
+  }
+  
+  .prof-field {
+    background-color: #ffffff;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    width: 300px; /* Fixed width for consistency */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .prof-field button {
+    margin-left: 0.5rem;
+    flex-shrink: 0;
   }
   
   .edit-btn {
@@ -32,13 +79,9 @@
     color: #000;
   }
   
-  .profile-info h2 {
-    margin: 0;
-  }
-  
   .change-password-btn {
     margin-top: 0.5rem;
-    background-color: #4285f4;
+    background-color: #a8a8a8;
     color: white;
     border: none;
     padding: 0.5rem 1rem;
@@ -47,6 +90,6 @@
   }
   
   .change-password-btn:hover {
-    background-color: #3367d6;
+    background-color: #787878;
   }
   
