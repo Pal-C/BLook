@@ -2,6 +2,11 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'core/css/bookstyles.css' %}">
+{% endblock %}
+
+
 {% block content %}
     <section class="detail-content">
         <div class="book-content">
@@ -10,28 +15,37 @@
             {% endif %}
 
             <h2>{{ book.title }}</h2>
-            <p class="sub-details"><strong>Author:</strong> {{ book.author }}</p>
-            <p class="sub-details"><strong>Genre:</strong> {{ book.genre }}</p>
-            <p class="sub-details"><strong>Type:</strong> {{ book.lit_type }}</p>
-            <p class="summary">{{ book.synopsis|truncatewords:30 }}</p>
-            {% if ave_rating %}
-                <p><strong>Rating: </strong> {{ ave_rating|floatformat:1 }}/5</p>
-            {% else %}
+            <div class="subsub">
+                <p class="sub-details"><strong>Author:</strong> {{ book.author }}</p>
+                <p class="sub-details"><strong>Genre:</strong> {{ book.genre }}</p>
+                <p class="sub-details"><strong>Type:</strong> {{ book.lit_type }}</p>
+                {% if ave_rating %}
+                <p class="sub-details"><strong>Rating: </strong> {{ ave_rating|floatformat:1 }}/5</p>
+                {% else %}
                 <p><strong>No ratings yet.</strong></p>
-            {% endif %}
+                {% endif %}
+            </div>
+            <p class="summary">{{ book.synopsis|truncatewords:30 }}</p>
+
             <div class="options">
-                <button class="option">+</button>
-                <a href="{% url 'add_review' book.id %}">Add Review</a>
+                <button class="option" onclick="window.location.href='{% url 'add_review' book.id %}'">+</button>
             </div>
         </div>
         <div class="reviews">
             <h2>Reviews</h2>
             {% for review in reviews %}
             <div class="review">
-                <p class="review-details"><strong>{{ review.user.username }}</strong> rated {{ review.rating }}/5</p>
-                <p class="review-details">{{ review.title }}</p>
+                <div class="user-review">
+                    <p class="review-details"><strong>{{ review.user.username }}</strong></p>
+                    <p class="review-details">{{ review.rating }} <img src="{% static 'core/images/rating.png' %}" class="star"></p>
+                </div>
+                <p class="review-title"><strong>{{ review.title }}</strong></p>
                 <p class="review-text">{{ review.text }}</p>
-            </div>
+                <button type="button" onclick="toggleCommentForm({{ review.id }})">
+                    <img src="{% static 'core/images/comment.png' %}" class="star">
+                </button>
+
+            
             {% for comment in review.comments.all %}
             
             <div class="comment-box">
@@ -43,10 +57,9 @@
                 {% endif %}
             </div>
             {% empty %}
-                <p>No comments yet...</p>
             {% endfor %}
+            </div>
 
-            <button type="button" onclick="toggleCommentForm({{ review.id }})">Add Comment</button>
 
             <form method="POST" action="{% url 'add_comment' review.id %}" 
                 class="comment-form" id="comment-form-{{ review.id }}" 
@@ -55,11 +68,11 @@
                 <textarea name="comment" required placeholder="Write your comment..."></textarea>
                 <button type="submit">Save</button>
             </form>
-        </div>
 
-        {% empty %}
+            {% empty %}
             <p>No reviews yet...</p>
-        {% endfor %}
+            {% endfor %}
+        </div>
 
         <div id="deleteModal" class="modal" style="display: none;">
             <div class="modal-content">
