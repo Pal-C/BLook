@@ -140,7 +140,7 @@ def add_review(request, book_id):
             title=title,
             text=text
         )
-        return redirect('home')
+        return redirect('book_detail', book.id)
     return render(request, 'review/add.html', {'book': book})
 
 def my_reviews(request):
@@ -179,3 +179,20 @@ def delete_review(request, review_id):
     if request.method == "POST":
         review.delete()
         return redirect('my_reviews')
+
+def add_comment(request, review_id):
+    if request.method == 'POST':
+        review = get_object_or_404(Review, pk=review_id)
+        Comment.objects.create(
+            review = review,
+            user = request.user,
+            text = request.POST['comment']
+        )
+
+    return redirect('book_detail', book_id=review.book.id)
+def delete_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id, user=request.user)
+    if request.method == 'POST':
+        comment.delete()
+    
+    return redirect('book_detail', comment.review.book.id)
