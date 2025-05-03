@@ -6,7 +6,6 @@
 <link rel="stylesheet" href="{% static 'core/css/profilestyles.css' %}">
 
 <div class="prof-wrapper">
-
   <div class="prof-main">
     <div class="prof-card" id="profile">
       <div class="prof-header">
@@ -16,39 +15,57 @@
             alt="Profile Picture" 
             class="prof-picture"
           />
-          <button class="edit-btn" title="Change Picture">✎</button>
+          <button class="edit-btn" title="Change Picture" onclick="toggleEditIcon(this)">
+            <img src="{% static 'core/images/edit-icon.svg' %}" alt="Edit" class="icon">
+          </button>
         </div>
 
         <h2>
           <div class="prof-field">
-            {{ user.profile.display_name|default:user.username }}
-            <button class="edit-btn" title="Edit Display Name">✎</button>
+            {{ user.profile.display_name|default:user.username|default:"Unnamed User" }}
+            <button class="edit-btn" title="Edit Display Name" onclick="toggleEditIcon(this)">
+              <img src="{% static 'core/images/edit-icon.svg' %}" alt="Edit" class="icon">
+            </button>
           </div>
-        </h2>
+        </h2>        
         
         <p>
           <div class="prof-field">
             <span id="email-hidden">Email: ••••••••••••••</span>
             <span id="email-shown" style="display: none;">Email: {{ user.email }}</span>
-            <button onclick="toggleEmail()" class="edit-btn" title="Reveal Email">👁</button>
+            <button onclick="toggleEmail(this)" class="edit-btn" title="Reveal Email">
+              <img src="{% static 'core/images/show-icon.svg' %}" alt="Show Email" class="icon">
+            </button>
           </div>
         </p>        
 
-          <button class="btn change-password-btn">Change Password</button>
-        </div>
+        <button class="change-password-btn">Change Password</button>
       </div>
     </div>
-
   </div>
-
 </div>
 
 <script>
-  function toggleEmail() {
+  function toggleEditIcon(button) {
+    const img = button.querySelector('img');
+    const isBlack = img.src.includes('edit-icon.svg');
+    img.src = isBlack 
+      ? "{% static 'core/images/edit-icon.svg' %}" 
+      : "{% static 'core/images/edit-icon.svg' %}";
+  }
+
+  function toggleEmail(button) {
     const hidden = document.getElementById('email-hidden');
     const shown = document.getElementById('email-shown');
-    hidden.style.display = hidden.style.display === 'none' ? 'inline' : 'none';
-    shown.style.display = shown.style.display === 'none' ? 'inline' : 'none';
+    const img = button.querySelector('img');
+
+    const isHidden = hidden.style.display !== 'none';
+    hidden.style.display = isHidden ? 'none' : 'inline';
+    shown.style.display = isHidden ? 'inline' : 'none';
+
+    img.src = isHidden 
+      ? "{% static 'core/images/hide-icon.svg' %}" 
+      : "{% static 'core/images/show-icon.svg' %}";
   }
 </script>
 
