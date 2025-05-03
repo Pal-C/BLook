@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
-
 body {
   background-color: #c5d1d5;
   margin: 0;
@@ -9,7 +8,8 @@ body {
   
   .prof-wrapper {
     display: flex;
-    align-items: center; /* Center the content vertically */
+
+    align-items: center; 
     min-height: 100vh;
     background-color: #59a7bc;
   }
