@@ -1,0 +1,184 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap');
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #6EA2B1;
+    color:rgb(32, 32, 32);
+}
+
+.book-spotlight {
+    width: 65%;
+    margin: 10px auto 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #4899B0;
+    padding: 1% 10%;
+    gap: 25px;
+}
+
+.book-spotlight img {
+    width: 230px;
+    height: 300px;
+}
+
+.spot-content {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
+    column-gap: 50px;
+}
+
+.spot-content h2 {
+    grid-row: 1;
+    grid-column: 1;
+    font-size: 50px;
+    margin: 1% 0 0;
+}
+.spot-sub {
+    display: grid;
+    grid-template-columns: auto 60%;
+    grid-template-rows: auto auto;
+    grid-row: 2;
+    grid-column: 1;
+}
+.spot-sub h4 {
+    margin: 10px 8px;
+    font-size: 18px;
+    font-family: 'Roboto Slab', serif;
+}
+.synopsis {
+    grid-row: 3;
+    grid-column: 1;
+    margin: 10px 8px;
+}
+
+.top-rated {
+    width: 85%;
+    margin: 75px auto 0;
+}
+
+.category-head {
+    background-color: #4B7682;
+    color:rgb(46, 44, 44);
+    width:fit-content;
+    line-height: 0;
+    padding: 10px;
+}
+
+.scroll-cat {
+    position:relative;
+    max-width: 90%;
+    height: auto;
+    margin: auto;
+    overflow: hidden;
+}
+
+.carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 1rem;
+    padding: 1rem 2.5rem;
+}
+
+.carousel::-webkit-scrollbar, .mini-carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.cat-card {
+    flex: 0 0 150px;
+    height: 250px;
+    background: #ddd;
+    border: 2px solid transparent;
+}
+
+.cat-card img {
+    width: 150px;
+    height: auto;
+    display: block;
+}
+
+.cat-card:first-child {
+    border-color: dodgerblue;
+}
+
+.left-scroll, .right-scroll{
+    position:absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    background: white;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    padding: 0.2rem 0.5rem;
+    color: #333;
+}
+
+.right-scroll {
+    right: 0
+}
+
+.left-scroll {
+    left: 0
+}
+
+.trending {
+    display: flex;
+    width: 85%;
+    margin: 75px auto 0;
+}
+
+
+.trend-books {
+    width: 75%;
+    height: auto;
+    background-color: bisque;
+    margin-right: 50px;
+}
+
+.trend-grid {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto auto;
+    gap: 2rem;
+}
+
+.trend-card {
+    display: flex;
+    background-color:#333 ;
+}
+
+.top-reviewers {
+    background-color: white;
+}
+
+.lit-section {
+    width: 85%;
+    margin: 75px auto 0;
+    background-color: aqua;
+}
+
+.mini-carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 1rem;
+    padding: 1rem 2.5rem;
+}
+
+.mini-cat-card {
+    flex: 0 0 100px;
+    height: 130px;
+    background: #ddd;
+    border: 2px solid transparent;
+}
+
+.mini-cat-card img {
+    width: 100px;
+    height: auto;
+    display: block;
+}
+

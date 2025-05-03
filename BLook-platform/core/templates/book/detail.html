@@ -14,6 +14,11 @@
             <p class="sub-details"><strong>Genre:</strong> {{ book.genre }}</p>
             <p class="sub-details"><strong>Type:</strong> {{ book.lit_type }}</p>
             <p class="summary">{{ book.synopsis|truncatewords:30 }}</p>
+            {% if ave_rating %}
+                <p><strong>Rating: </strong> {{ ave_rating|floatformat:1 }}/5</p>
+            {% else %}
+                <p><strong>No ratings yet.</strong></p>
+            {% endif %}
             <div class="options">
                 <button class="option">+</button>
                 <a href="{% url 'add_review' book.id %}">Add Review</a>
