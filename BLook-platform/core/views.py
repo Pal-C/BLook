@@ -8,6 +8,13 @@ from .models import Book, Review, Comment
 from django.db.models import Q
 from django.http import JsonResponse
 
+# Book categories
+LIT_GROUPS = {    
+    'Novels': ['Novel', 'Lightnovel'],
+    'Comics': ['Comic', 'Graphic Novel'],    # I'm imagining like Marvel and stuff, idk how to name non-asian ones man XD
+    "Manga_plus": ['Manga', 'Manwha', 'Manhua'],
+    'WebComics': ['WebToon', 'Fanfiction']
+}
 
 def home(request):
     return render(request, 'main/home.html')
@@ -55,6 +62,7 @@ def auth_screen(request):
 def browse(request):
     query = request.GET.get('q')
     books = Book.objects.all()
+    lit_group = request.GET.get('lit_group')
 
     if query:
         books = books.filter(
@@ -63,6 +71,10 @@ def browse(request):
             Q(genre__icontains=query) |
             Q(added_by__username__icontains=query)
         )
+    
+    if lit_group:
+         books = books.filter(lit_type__in=LIT_GROUPS[lit_group])
+
     return render(request, 'book/browse.html', {'books': books})
 
 def upload_review(request):

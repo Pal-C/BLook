@@ -18,10 +18,10 @@
                 <button class="nav-option" onclick="openOverlay()">Add</button>
             </div>
             <div class="genre-options">
-                <a href="" class="genre-option">Novels</a>
-                <a href="" class="genre-option">Comics</a>
-                <a href="" class="genre-option">Manga</a>
-                <a href="" class="genre-option">WebNovels</a>
+                <a href="{% url 'browse' %}?lit_group=Novels" class="genre-option">Novels</a>
+                <a href="{% url 'browse' %}?lit_group=Comics" class="genre-option">Comics</a>
+                <a href="{% url 'browse' %}?lit_group=Manga_plus" class="genre-option">Manga+</a>
+                <a href="{% url 'browse' %}?lit_group=WebComics" class="genre-option">WebNovels</a>
                 <a href="" class="genre-option">Other</a>
             </div>
         </div>
