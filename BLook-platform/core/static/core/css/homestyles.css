@@ -3,19 +3,20 @@
 
 body {
     font-family: 'Montserrat', sans-serif;
-    background-color: #6EA2B1;
     color:rgb(32, 32, 32);
 }
 
 .book-spotlight {
     width: 65%;
-    margin: 10px auto 0;
+    margin: 30px auto ;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #4899B0;
-    padding: 1% 10%;
+    background-color: #4b7682;
+    border-radius: 15px;
+    padding: 3% 15%;
     gap: 25px;
+    color: #ffffff;
 }
 
 .book-spotlight img {
@@ -27,7 +28,6 @@ body {
     display: grid;
     grid-template-columns: auto auto;
     grid-template-rows: auto auto;
-    column-gap: 50px;
 }
 
 .spot-content h2 {
@@ -56,15 +56,17 @@ body {
 
 .top-rated {
     width: 85%;
-    margin: 75px auto 0;
+    margin: 30px auto 0;
+    border-radius: 20px;
 }
 
 .category-head {
-    background-color: #4B7682;
-    color:rgb(46, 44, 44);
+    background-color: #2b2b2b;
+    color:#ffffff;
     width:fit-content;
     line-height: 0;
-    padding: 10px;
+    padding: 10px 25px;
+    border-radius: 40px;
 }
 
 .scroll-cat {
@@ -79,7 +81,7 @@ body {
     display: flex;
     overflow-x: auto;
     scroll-behavior: smooth;
-    gap: 1rem;
+    gap: 1.2rem;
     padding: 1rem 2.5rem;
 }
 
@@ -91,17 +93,17 @@ body {
     flex: 0 0 150px;
     height: 250px;
     background: #ddd;
+    border-radius: 10px;
     border: 2px solid transparent;
+    padding: 6px;
 }
 
 .cat-card img {
     width: 150px;
-    height: auto;
+    height: 200px;
     display: block;
-}
-
-.cat-card:first-child {
-    border-color: dodgerblue;
+    object-fit: cover;
+    
 }
 
 .left-scroll, .right-scroll{
@@ -111,6 +113,8 @@ body {
     z-index: 2;
     background: white;
     border: none;
+    border-radius: 45%;
+    min-width: 40px;
     font-size: 2rem;
     cursor: pointer;
     padding: 0.2rem 0.5rem;
@@ -125,40 +129,77 @@ body {
     left: 0
 }
 
+.left-scroll:hover, .right-scroll:hover {
+    background: #2b2b2b; 
+    color: #ffffff;
+}
+
 .trending {
     display: flex;
     width: 85%;
-    margin: 75px auto 0;
+    margin: 30px auto 0;
 }
-
 
 .trend-books {
     width: 75%;
     height: auto;
-    background-color: bisque;
-    margin-right: 50px;
+    flex-direction: column;
+    margin: 10px;
+}
+
+.trend-bookcover {
+    width: 150px;
+    height: 200px;
+    object-fit: cover;
+    padding: 0 15px 0 0;
 }
 
 .trend-grid {
     display: grid;
     grid-template-columns: auto auto;
     grid-template-rows: auto auto auto;
-    gap: 2rem;
+    gap: 1rem;
+    padding: 20px 10px;
 }
 
 .trend-card {
+    padding: 20px;
+    border-radius: 20px;
     display: flex;
-    background-color:#333 ;
+    background-color:#f8f9fa ;
+}
+
+.card-details {
+    padding: 0 15px;
 }
 
 .top-reviewers {
-    background-color: white;
+    width: 75%;
+    height: auto;
+    flex-direction: column;
+    margin: 10px;
+}
+
+.reviewer-card {
+    margin: 20px 10px;
+    gap: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 20px;
+}
+
+.reviwer-card details {
+    padding: 15px;
 }
 
 .lit-section {
     width: 85%;
     margin: 75px auto 0;
-    background-color: aqua;
+    color: #ffffff;
+}
+
+.lit-cat {
+    gap: 2rem;
+    padding: 10px;
 }
 
 .mini-carousel {
@@ -167,18 +208,37 @@ body {
     scroll-behavior: smooth;
     gap: 1rem;
     padding: 1rem 2.5rem;
+    background-color:#4b7682;
+    border-radius: 15px;
 }
 
 .mini-cat-card {
     flex: 0 0 100px;
-    height: 130px;
+    width: 50px;
+    height: auto;
+    object-fit: cover;
     background: #ddd;
-    border: 2px solid transparent;
 }
 
 .mini-cat-card img {
     width: 100px;
-    height: auto;
+    height: 160px;
+    object-fit: cover;
     display: block;
 }
 
+@media screen and (max-width: 768px) {
+    .trending {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .trend-books {
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    .trend-grid {
+        grid-template-columns: 1fr;
+    }
+}
