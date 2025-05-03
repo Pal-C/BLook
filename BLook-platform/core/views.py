@@ -110,7 +110,7 @@ def add_review(request, book_id):
             title=title,
             text=text
         )
-        return redirect('home')
+        return redirect('book_detail', book.id)
     return render(request, 'review/add.html', {'book': book})
 
 def view_profile(request):

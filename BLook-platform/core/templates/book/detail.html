@@ -24,6 +24,7 @@
             {% for review in reviews %}
             <div class="review">
                 <p class="review-details"><strong>{{ review.user.username }}</strong> rated {{ review.rating }}/5</p>
+                <p class="review-details">{{ review.title }}</p>
                 <p class="review-text">{{ review.text }}</p>
             </div>
             {% for comment in review.comments.all %}
