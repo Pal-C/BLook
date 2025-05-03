@@ -1,8 +1,13 @@
 <!-- Add Review / Upload Book to Review Page -->
 {% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/addstyles.css' %}">
+{% endblock %}
 
 {% block content %}
-<h1>thi is book upload</h1>
+<h1>Upload a Book</h1>
 <section class="book-content">
 
     <div class="book-details">
@@ -12,28 +17,31 @@
         <form method="post" action="{% url 'upload_review' %}">
             {% csrf_token %}
             <label for="title">Title:</label>
-            <input id="title" name="title" placeholder="Book Title...">
+            <input id="title" name="title" required  placeholder="Book Title...">
 
             <label for="author">Author:</label>
-            <input id="author" name="author" placeholder="Author Name...">
+            <input id="author" name="author" required  placeholder="Author Name...">
 
             <label for="synopsis">Synopsis:</label>
-            <input id="synopsis" name="synopsis" placeholder="Book Synopsis...">
+            <input id="synopsis" name="synopsis" required  placeholder="Book Synopsis...">
 
             <label for="genre">Genre:</label>
-            <input id="genre" name="genre" placeholder="Genre...">
+            <input id="genre" name="genre" required placeholder="Genre...">
 
             <label for="lit_type">Type:</label>
-            <input id="lit_type" name="lit_type" placeholder="Type...">
+            <input id="lit_type" name="lit_type" required  placeholder="Type...">
 
             <label for="cover_image_url">Book Cover:</label>
             <input id="cover_image_url" name="cover_image_url">
 
             <label for="rating">Rating:</label>
-            <input id="rating" name="rating" placeholder="Rating...">
+            <input type="number" id="rating" name="rating"  min="1" max="5" required placeholder="Rating...">
+
+            <label for="review_title">Review:</label>
+            <input id="review_title" name="review_title" required  placeholder="Write your review...">
 
             <label for="review">Review:</label>
-            <input id="review" name="review" placeholder="Write your review...">
+            <input id="review" name="review" required  placeholder="Write your review...">
         
             <button type="submit">ADD</button>
         </form>

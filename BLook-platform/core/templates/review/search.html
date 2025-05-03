@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'core/css/searchstyles.css' %}">
+{% endblock %}
+
 {% block content %}
+
+
 
 <h2>Search for a book to review</h2>
 <input type="text" id="search-input2" placeholder="Search by title or author...">

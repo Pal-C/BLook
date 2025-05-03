@@ -117,6 +117,7 @@ def upload_review(request):
         
 
         rating = request.POST.get('rating')
+        review_title = request.POST.get('review_title')
         review_text = request.POST.get('review')
 
         book = Book.objects.create(
@@ -130,6 +131,7 @@ def upload_review(request):
         
         Review.objects.create(book=book,
                               user=request.user,
+                              review_title=review_title,
                               text=review_text,
                               rating=rating)
 
@@ -166,23 +168,6 @@ def ajax_search_books(request):
     data = [{"id": b.id, "title": b.title, "author": b.author} for b in books]
 
     return JsonResponse({"results": data})
-
-def add_review(request, book_id):
-    book = get_object_or_404(Book, id=book_id)
-
-    if request.method == 'POST':
-        rating = request.POST.get('rating')
-        title = request.POST.get('title')
-        text = request.POST.get('review')
-        Review.objects.create(
-            book=book,
-            user=request.user,
-            rating=rating,
-            title=title,
-            text=text
-        )
-        return redirect('book_detail', book.id)
-    return render(request, 'review/add.html', {'book': book})
 
 def my_reviews(request):
     user = request.user
@@ -233,6 +218,7 @@ def add_comment(request, review_id):
         )
 
     return redirect('book_detail', book_id=review.book.id)
+
 def delete_comment(request, comment_id):
     comment = get_object_or_404(Comment, id=comment_id, user=request.user)
     if request.method == 'POST':

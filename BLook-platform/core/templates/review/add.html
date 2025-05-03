@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/addstyles.css' %}">
+{% endblock %}
+
+
 
 {% block content %}
 <h1>Review "{{ book.title }}" by {{ book.author }}</h1>
@@ -20,5 +25,5 @@
     <button type="submit">Submit Review</button>
 </form>
 
-<a href="{% url 'browse' %}">← Back to Browse</a>
+<a href="{% url 'browse' %}" class="back">← Back to Browse</a> 
 {% endblock %}
