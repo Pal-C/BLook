@@ -2,11 +2,15 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordResetForm
 from django.contrib.auth import login, authenticate
+from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.messages import get_messages
 from .models import Book, Review, Comment
-from django.db.models import Q
+from django.db.models import Q, Avg, Count
 from django.http import JsonResponse
+from django.utils import timezone
+from datetime import timedelta
+
 
 # Book categories
 LIT_GROUPS = {    
@@ -17,7 +21,32 @@ LIT_GROUPS = {
 }
 
 def home(request):
-    return render(request, 'main/home.html')
+    top_books = Book.objects.annotate(ave_rating=Avg('review__rating')).order_by('-ave_rating')[:10]
+    last_7_days = timezone.now() - timedelta(days=7)
+    
+    trending_books = Book.objects.annotate(
+        recent_count=Count('review', filter=Q(review__created_at__gte=last_7_days)),
+        recent_avg=Avg('review__rating', filter=Q(review__created_at__gte=last_7_days))
+    ).filter(recent_count__gt=0).order_by('-recent_count', '-recent_avg')[:6]
+
+    top_reviewers = User.objects.annotate(
+        review_count=Count('review')
+    ).filter(review_count__gt=0).order_by('-review_count')[:5]
+
+    novels = Book.objects.filter(lit_type__in=LIT_GROUPS['Novels'])
+    comics = Book.objects.filter(lit_type__in=LIT_GROUPS['Comics'])
+    manga_plus = Book.objects.filter(lit_type__in=LIT_GROUPS['Manga_plus'])
+    webcomics = Book.objects.filter(lit_type__in=LIT_GROUPS['WebComics'])
+
+    return render(request, 'main/home.html', {
+        'top_books': top_books,
+        'trending_books': trending_books,
+        'top_reviewers': top_reviewers,
+        'novel_books': novels,
+        'comic_books': comics,
+        'manga_plus_books': manga_plus,
+        'webcomic_books': webcomics
+        })
 
 def auth_screen(request):
 # Clear stale messages if user is not authenticated (i.e. just logged out)
@@ -166,11 +195,13 @@ def book_detail(request, book_id):
     book = get_object_or_404(Book, id=book_id)
     reviews = Review.objects.filter(book=book)
     comments = Comment.objects.filter(review__book=book)
+    ave_rating = reviews.aggregate(Avg('rating'))['rating__avg']
 
     return render(request, 'book/detail.html', {
         'book': book,
         'reviews': reviews,
         'comments': comments,
+        'ave_rating': ave_rating,
         }
     )
 

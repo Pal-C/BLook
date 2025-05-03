@@ -50,18 +50,6 @@
         </div>
     </nav>
 
-    <header>
-        <h1>BLook 📚</h1>
-        {% if user.is_authenticated %}
-            Welcome, {{ user.username }} |
-            <a href="{% url 'logout' %}">Logout</a>
-        {% else %}
-            <a href="{% url 'login' %}">Login</a> |
-            <a href="{% url 'register' %}">Register</a>
-        {% endif %}
-    </header>
-    <hr>
-
     <script>
         function openOverlay() {
             document.getElementById("add-overlay").style.display = "flex";
