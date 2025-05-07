@@ -52,7 +52,7 @@ Design: https://www.figma.com/design/n8lcs4YWfxKZn4lJAknK5y/BLook?node-id=0-1&p=
     python manage.py runserver
 
 7. **Access the App**
-  Visit http://127.0.0.1:8000/ in your browser.
+  Visit http://127.0.0.1:8000/core/auth in your browser.
 
 ## 📁 Project Structure
 ![image](https://github.com/user-attachments/assets/2d8293fb-700a-438d-a2ba-06545e10f30a)
